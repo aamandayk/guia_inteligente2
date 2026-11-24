@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-fs="0">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperGuia Inteligente</title>
+
+<style>
+:root {
+    --navy: #14233d;
+    --blue: #203d65;
+    --yellow: #ffd52a;
+    --white: #ffffff;
+    --bg: #f2f5fa;
+    --text: #26344a;
+    --green: #16834b;
+    --muted: #68758a;
+}
+
+/* Tamanho de letra ajustável (acessibilidade) */
+html { font-size: 100%; }
+html[data-fs="-1"] { font-size: 90%; }
+html[data-fs="1"]  { font-size: 115%; }
+html[data-fs="2"]  { font-size: 130%; }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+button { font-family: inherit; }
+
+:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 2px;
+}
+
+/* HEADER */
+
+header {
+    background: linear-gradient(120deg, #101d35, #294b75);
+    color: white;
+    padding: 1.4rem 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 5px solid var(--yellow);
+}
+
+.logo { display: flex; align-items: center; gap: .8rem; }
+
+.logo-icon {
+    background: var(--yellow);
+    color: var(--navy);
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+}
+
+.logo h1 { font-size: 1.6rem; }
+.logo h1 span { color: var(--yellow); }
+.logo p { font-size: .75rem; color: #d9e2ef; margin-top: 4px; }
+
+.header-right { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
+
+.a11y {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    background: #ffffff18;
+    padding: .35rem .6rem;
+    border-radius: 30px;
+    font-size: .75rem;
+}
+
+.a11y button {
+    background: var(--yellow);
+    color: var(--navy);
+    border: none;
+    min-width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.a11y button:hover { background: #efc000; }
+
+.status {
+    background: #ffffff18;
+    padding: .7rem 1.1rem;
+    border-radius: 30px;
+    font-size: .8rem;
+}
+
+/* MAIN */
+
+main {
+    min-height: 85vh;
+    padding: 2.5rem 6%;
+    background:
+        radial-gradient(circle at 90% 10%, #ffe98c55, transparent 25%),
+        radial-gradient(circle at 5% 50%, #b9cce755, transparent 25%),
+        var(--bg);
+}
+
+.hero {
+    background: linear-gradient(120deg, #172943, #294b75);
+    border-radius: 25px;
+    padding: 2.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 30px #14233d20;
+}
+
+.hero::after {
+    content: "🛒";
+    position: absolute;
+    right: 8%;
+    top: 5px;
+    font-size: 8rem;
+    opacity: .14;
+}
+
+.hero-content { position: relative; z-index: 1; }
+
+.hero-tag {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--navy);
+    padding: .5rem 1rem;
+    border-radius: 20px;
+    font-size: .7rem;
+    font-weight: bold;
+    margin-bottom: 1.1rem;
+}
+
+.hero h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); margin-bottom: .7rem; }
+.hero h2 span { color: var(--yellow); }
+
+.hero p { color: #e0e7f2; line-height: 1.7; max-width: 550px; }
+
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: 1.3rem;
+}
+
+.steps li {
+    list-style: none;
+    background: #ffffff1c;
+    border: 1px solid #ffffff30;
+    border-radius: 20px;
+    padding: .4rem .9rem;
+    font-size: .8rem;
+}
+
+.steps b { color: var(--yellow); }
+
+/* PESQUISA */
+
+.search-area {
+    max-width: 850px;
+    margin: -27px auto 2.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.search-box {
+    background: white;
+    padding: .75rem;
+    display: flex;
+    gap: .6rem;
+    border-radius: 17px;
+    box-shadow: 0 8px 30px #14233d20;
+    border: 1px solid #e2e7ef;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    padding: .9rem;
+    font-size: 1.05rem;
+    color: var(--text);
+}
+
+.search-box button {
+    background: var(--yellow);
+    color: var(--navy);
+    border: none;
+    padding: 0 1.7rem;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-box button:hover { background: #efc000; }
+
+.search-hint {
+    text-align: center;
+    font-size: .8rem;
+    color: var(--muted);
+    margin-top: .8rem;
+}
+
+/* SEÇÕES */
+
+.section-title { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.2rem; }
+.section-title h2 { font-size: 1.4rem; color: var(--navy); }
+
+/* CATEGORIAS */
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.category-card {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 17px;
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .95rem;
+    cursor: pointer;
+    text-align: left;
+    transition: .25s;
+    box-shadow: 0 5px 18px #14233d0b;
+}
+
+.category-card:hover,
+.category-card.active {
+    border-color: var(--yellow);
+    transform: translateY(-4px);
+    background: #fffdf4;
+}
+
+.category-icon {
+    background: #fff3c1;
+    min-width: 3.3rem;
+    height: 3.3rem;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 1.65rem;
+}
+
+.category-card h3 { color: var(--navy); font-size: 1rem; }
+.category-card p { color: #7b8798; font-size: .72rem; margin-top: 4px; }
+
+/* RESULTADOS */
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+
+.results-header .section-title { margin-bottom: 0; }
+
+.results-tools { display: flex; align-items: center; gap: .9rem; flex-wrap: wrap; }
+.results-tools p { color: #748197; font-size: .85rem; }
+
+.results-tools select {
+    border: 1px solid #d5dce8;
+    background: white;
+    border-radius: 10px;
+    padding: .5rem .7rem;
+    font-size: .85rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+#resultados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
+}
+
+.product-card {
+    background: white;
+    border: 1px solid #e8ebf0;
+    border-radius: 19px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px #14233d0b;
+    transition: .25s;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px #14233d18;
+}
+
+.product-card.best { border: 2px solid var(--green); }
+
+.product-top {
+    padding: 1.1rem 1.25rem;
+    background: linear-gradient(135deg, #edf2fa, #ffffff);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-emoji { font-size: 3rem; line-height: 1; }
+
+.product-category {
+    background: #fff0b0;
+    color: #755900;
+    font-size: .65rem;
+    font-weight: bold;
+    padding: .45rem .65rem;
+    border-radius: 20px;
+}
+
+.product-info { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+
+.product-info h3 { color: var(--navy); font-size: 1.25rem; margin-bottom: 4px; }
+
+.brand { color: #7d8797; font-size: .85rem; }
+
+.price {
+    color: var(--green);
+    font-size: 1.65rem;
+    font-weight: 800;
+    margin: 1rem 0;
+}
+
+.price small {
+    display: block;
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+.price .unit { font-size: .85rem; font-weight: 600; color: var(--muted); }
+
+.cheapest {
+    display: inline-block;
+    background: #e3f6ea;
+    color: var(--green);
+    font-size: .7rem;
+    font-weight: bold;
+    padding: .35rem .6rem;
+    border-radius: 20px;
+    margin: -.4rem 0 .9rem;
+}
+
+.extra {
+    color: #a24a2a;
+    font-size: .75rem;
+    font-weight: 600;
+    margin: -.4rem 0 .9rem;
+}
+
+.location-box {
+    background: #fff6cf;
+    border: 1px solid #f7e49a;
+    border-radius: 12px;
+    padding: .8rem;
+}
+
+.location-box h4 { font-size: .8rem; margin-bottom: .5rem; color: var(--navy); }
+
+.location-box p { font-size: .78rem; line-height: 1.8; color: #5c5130; }
+
+.actions { margin-top: auto; padding-top: .8rem; display: grid; gap: .5rem; }
+.actions .row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+
+.btn {
+    border: none;
+    border-radius: 10px;
+    padding: .75rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: .8rem;
+}
+
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--blue); }
+
+.btn-ghost { background: #eef2f9; color: var(--navy); }
+.btn-ghost:hover { background: #dfe7f3; }
+
+.back-row { grid-column: 1/-1; }
+
+.back-button {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: .7rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.back-button:hover { background: var(--blue); }
+
+.compare-head {
+    grid-column: 1/-1;
+    background: white;
+    border-radius: 19px;
+    padding: 1.2rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 18px #14233d0b;
+}
+
+.compare-head .product-emoji { font-size: 3.6rem; }
+.compare-head h3 { color: var(--navy); font-size: 1.4rem; }
+.compare-head .location-box { flex: 1; min-width: 220px; }
+
+.empty {
+    grid-column: 1/-1;
+    background: white;
+    border-radius: 18px;
+    padding: 2.8rem 1.2rem;
+    text-align: center;
+    color: #748197;
+}
+
+.empty span { font-size: 2.8rem; display: block; margin-bottom: 1rem; }
+
+/* MAPA (janela) */
+
+dialog {
+    border: none;
+    border-radius: 22px;
+    padding: 1.4rem;
+    width: min(620px, 94vw);
+    margin: auto;
+    box-shadow: 0 20px 60px #14233d55;
+    color: var(--text);
+}
+
+dialog::backdrop { background: #101d35aa; }
+
+.dlg-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dlg-head h3 { color: var(--navy); font-size: 1.2rem; }
+
+.dlg-close {
+    background: var(--navy);
+    color: white;
+    border: none;
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.mapa {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .6rem;
+    background: #e8eef7;
+    border-radius: 16px;
+    padding: .7rem;
+}
+
+.corredor {
+    background: white;
+    border-radius: 12px;
+    padding: .7rem .4rem;
+    text-align: center;
+    border: 2px solid transparent;
+    font-size: .75rem;
+    position: relative;
+    min-height: 5.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.corredor .c-num { font-weight: bold; color: var(--navy); }
+.corredor .c-emoji { font-size: 1.6rem; }
+.corredor .c-nome { color: #7b8798; }
+
+.corredor.ativo {
+    background: #fff6cf;
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 4px #ffd52a55;
+}
+
+.corredor .pin {
+    position: absolute;
+    top: -.8rem;
+    right: -.3rem;
+    font-size: 1.6rem;
+    animation: pulo 1s infinite alternate;
+}
+
+.corredor small { color: #5c5130; font-weight: 600; }
+
+@keyframes pulo { to { transform: translateY(-5px); } }
+
+.entrada {
+    margin-top: .6rem;
+    background: var(--navy);
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    padding: .6rem;
+    font-size: .8rem;
+}
+
+.mapa-info { margin-top: .9rem; font-size: .9rem; line-height: 1.6; text-align: center; }
+
+/* RODAPÉ */
+
+footer {
+    background: #101d35;
+    color: white;
+    padding: 1.9rem 6%;
+    text-align: center;
+}
+
+footer h3 { margin-bottom: .5rem; }
+footer span { color: var(--yellow); }
+footer p { color: #bdc9dc; font-size: .75rem; line-height: 1.8; }
+
+@media (max-width: 750px) {
+    main { padding: 1.6rem 1.1rem; }
+    .categories { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding: 1.7rem 1.4rem; }
+    .hero::after { right: 2%; font-size: 5rem; }
+}
+
+@media (max-width: 500px) {
+    .categories { grid-template-columns: 1fr; }
+    .search-box { flex-direction: column; }
+    .search-box button { padding: 1rem; }
+    .logo h1 { font-size: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🛒</div>
+        <div>
+            <h1>SuperGuia <span>Inteligente</span></h1>
+            <p>Encontre, compare e escolha!</p>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <div class="a11y" role="group" aria-label="Tamanho das letras">
+            <span>Letras</span>
+            <button type="button" id="fsMenos" aria-label="Diminuir letras">A−</button>
+            <button type="button" id="fsMais" aria-label="Aumentar letras">A+</button>
+        </div>
+        <div class="status">🟢 Sistema de consulta</div>
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">TECNOLOGIA A SERVIÇO DA SUA COMPRA</div>
+
+            <h2>Sua compra mais <span>fácil e inteligente!</span></h2>
+
+            <p>
+                Encontre produtos, descubra onde estão localizados
+                e compare preços em poucos segundos.
+            </p>
+
+            <ul class="steps">
+                <li><b>1</b> Busque o produto</li>
+                <li><b>2</b> Descubra a localização</li>
+                <li><b>3</b> Compare as marcas</li>
+                <li><b>4</b> Siga o mapa</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="search-area">
+        <div class="search-box">
+            <input
+                type="search"
+                id="campoPesquisa"
+                list="sugestoes"
+                autocomplete="off"
+                aria-label="Pesquisar produto"
+                placeholder="🔎 O que você está procurando?"
+            >
+            <datalist id="sugestoes"></datalist>
+            <button type="button" id="botaoBuscar">BUSCAR →</button>
+        </div>
+
+        <p class="search-hint">
+            Digite o nome de um produto (não precisa de acento) ou escolha uma categoria.
+        </p>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h2>📂 Explore as categorias</h2>
+        </div>
+
+        <div class="categories" id="categorias"></div>
+    </section>
+
+    <section>
+        <div class="results-header">
+            <div class="section-title">
+                <h2 id="tituloResultados">🛍️ Produtos em destaque</h2>
+            </div>
+
+            <div class="results-tools">
+                <p id="contador" aria-live="polite"></p>
+                <select id="ordem" aria-label="Ordenar resultados">
+                    <option value="padrao">Ordenar: padrão</option>
+                    <option value="az">Nome (A–Z)</option>
+                    <option value="menor">Menor preço</option>
+                    <option value="maior">Maior preço</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="resultados"></div>
+    </section>
+
+</main>
+
+<dialog id="dlgMapa" aria-labelledby="mapaTitulo">
+    <div class="dlg-head">
+        <h3 id="mapaTitulo">Mapa da loja</h3>
+        <button type="button" class="dlg-close" id="fecharMapa" aria-label="Fechar mapa">✕</button>
+    </div>
+    <div class="mapa" id="mapaGrid"></div>
+    <div class="entrada">🚪 Entrada e caixas</div>
+    <p class="mapa-info" id="mapaInfo"></p>
+</dialog>
+
+<footer>
+    <h3>🛒 SuperGuia <span>Inteligente</span></h3>
+    <p>Projeto desenvolvido por alunos do SENAC</p>
+    <p>Turma 197 - Qualificação de Aprendizagem em Supermercados</p>
+    <p>Uma compra mais prática, econômica e autônoma!</p>
+</footer>
+
+<script>
+
+// =====================================
+// CATEGORIAS
+// =====================================
+
+const categorias = [
+    {nome:"Alimentos",  emoji:"🍎", descricao:"Arroz, feijão, massas..."},
+    {nome:"Higiene",    emoji:"🧴", descricao:"Sabonetes, shampoos..."},
+    {nome:"Limpeza",    emoji:"🧹", descricao:"Detergentes e produtos..."},
+    {nome:"Bazar",      emoji:"🏠", descricao:"Utensílios e utilidades..."},
+    {nome:"Bebidas",    emoji:"🥤", descricao:"Sucos e refrigerantes..."},
+    {nome:"Hortifruti", emoji:"🥑", descricao:"Frutas e verduras..."},
+    {nome:"Açougue",    emoji:"🥩", descricao:"Carnes e frangos..."},
+    {nome:"Padaria",    emoji:"🥖", descricao:"Pães e bolos..."},
+    {nome:"Congelados", emoji:"🧊", descricao:"Alimentos congelados..."}
+];
+
+// =====================================
+// CATÁLOGO: [nome do produto, emoji]
+// 30 produtos por categoria, cada um com seu emoji
+// =====================================
+
+const CATALOGO = {
+
+Alimentos: [
+    ["Arroz","🍚"], ["Feijão","🫘"], ["Leite","🥛"], ["Macarrão","🍝"], ["Óleo","🫒"], ["Açúcar","🍬"],
+    ["Café","☕"], ["Farinha de trigo","🌾"], ["Biscoito","🍪"], ["Sal","🧂"], ["Molho de tomate","🥫"],
+    ["Milho em conserva","🌽"], ["Ervilha","🫛"], ["Aveia","🥣"], ["Farinha de mandioca","🍠"],
+    ["Fubá","🫓"], ["Lentilha","🥘"], ["Grão-de-bico","🧆"], ["Achocolatado","🍫"], ["Leite condensado","🍯"],
+    ["Creme de leite","🍶"], ["Gelatina","🍮"], ["Maionese","🥚"], ["Ketchup","🍅"], ["Mostarda","🌭"],
+    ["Atum","🐟"], ["Sardinha","🐠"], ["Margarina","🧈"], ["Queijo ralado","🧀"], ["Pipoca","🍿"]
+],
+
+Higiene: [
+    ["Sabonete","🧼"], ["Shampoo","🧴"], ["Condicionador","💇‍♀️"], ["Creme dental","🦷"],
+    ["Desodorante","💨"], ["Papel higiênico","🧻"], ["Escova de dentes","🪥"],
+    ["Fio dental","🧵"], ["Enxaguante bucal","👄"], ["Hidratante corporal","💧"],
+    ["Protetor solar","☀️"], ["Algodão","☁️"], ["Cotonete","👂"], ["Absorvente","🌸"],
+    ["Lenço umedecido","💦"], ["Gel para cabelo","💈"], ["Creme de pentear","🦱"],
+    ["Aparelho de barbear","🪒"], ["Espuma de barbear","🧔"], ["Talco","👶"],
+    ["Água oxigenada","🧪"], ["Curativo adesivo","🩹"], ["Sabonete líquido","🫧"],
+    ["Máscara facial","😷"], ["Álcool em gel","🙌"], ["Pente","🪮"], ["Escova de cabelo","💇"],
+    ["Lixa de unha","💅"], ["Creme para mãos","🤲"], ["Protetor labial","💄"]
+],
+
+Limpeza: [
+    ["Detergente","🍽️"], ["Amaciante","🧺"], ["Água sanitária","🫗"], ["Desinfetante","🦠"],
+    ["Sabão em pó","📦"], ["Esponja","🧽"], ["Limpador multiuso","✨"], ["Saco de lixo","🗑️"],
+    ["Sabão em barra","🟦"], ["Limpa-vidros","🪟"], ["Álcool doméstico","🔥"],
+    ["Pano de chão","🟫"], ["Flanela","🧣"], ["Lustra-móveis","🪑"], ["Desengordurante","🍳"],
+    ["Amaciante concentrado","🌺"], ["Sabão líquido","🧼"], ["Desinfetante perfumado","💐"],
+    ["Esponja de aço","🔩"], ["Papel toalha","📜"], ["Luvas de limpeza","🧤"],
+    ["Rodo","🌊"], ["Vassoura","🧹"], ["Balde","🪣"], ["Pá de lixo","♻️"],
+    ["Mop","🐑"], ["Escova de limpeza","🖌️"], ["Limpa-piso","🏠"], ["Pedra sanitária","🚽"],
+    ["Pastilha sanitária","🔵"]
+],
+
+Bazar: [
+    ["Prato","🍽️"], ["Copo","🥃"], ["Panela","🍲"], ["Frigideira","🍳"],
+    ["Caneca","🍵"], ["Talheres","🍴"], ["Colher de pau","🥄"], ["Espátula","🥞"], ["Peneira","🕸️"],
+    ["Escorredor","🫕"], ["Pote plástico","🥡"], ["Garrafa térmica","🫖"], ["Jarra","🍹"],
+    ["Tábua de corte","🪵"], ["Abridor de latas","🥫"], ["Saca-rolhas","🍷"],
+    ["Assadeira","🥧"], ["Forma de bolo","🎂"], ["Pano de prato","🏳️"], ["Varal","👕"],
+    ["Pregador de roupas","📎"], ["Cabide","🧥"], ["Cesto organizador","🧺"],
+    ["Lixeira","🚮"], ["Faca de cozinha","🔪"], ["Tesoura","✂️"], ["Lanterna","🔦"], ["Pilha","🔋"],
+    ["Ralador","🥕"], ["Concha","🍜"]
+],
+
+Bebidas: [
+    ["Refrigerante","🥤"], ["Suco","🧃"], ["Água mineral","💧"], ["Água com gás","💦"],
+    ["Água de coco","🥥"], ["Chá gelado","🧊"], ["Energético","⚡"], ["Isotônico","🏃"],
+    ["Suco de uva","🍇"], ["Suco de laranja","🍊"], ["Néctar de pêssego","🍑"],
+    ["Refrigerante de limão","🍋"], ["Refrigerante de cola","🥫"],
+    ["Refrigerante de guaraná","🍒"], ["Chá de pêssego","🫖"],
+    ["Chá de limão","🍵"], ["Bebida láctea","🍼"], ["Leite fermentado","🦠"],
+    ["Vitamina pronta","🍌"], ["Achocolatado pronto","🧋"], ["Suco de maçã","🍎"],
+    ["Suco de maracujá","🟡"], ["Suco de manga","🥭"], ["Água saborizada","🍓"],
+    ["Bebida de soja","🌱"], ["Café pronto","🫗"], ["Tônica","🍸"], ["Xarope de groselha","🍬"],
+    ["Polpa de fruta","🍹"], ["Suco integral","🌿"]
+],
+
+Hortifruti: [
+    ["Banana","🍌"], ["Maçã","🍎"], ["Tomate","🍅"], ["Alface","🥬"], ["Batata","🥔"], ["Cenoura","🥕"],
+    ["Cebola","🧅"], ["Alho","🧄"], ["Laranja","🍊"], ["Limão","🍋"], ["Mamão","🟠"], ["Melancia","🍉"],
+    ["Melão","🍈"], ["Abacaxi","🍍"], ["Manga","🥭"], ["Uva","🍇"], ["Morango","🍓"], ["Pepino","🥒"],
+    ["Abobrinha","🎃"], ["Berinjela","🍆"], ["Brócolis","🥦"], ["Couve-flor","🌸"], ["Repolho","🥗"],
+    ["Pimentão","🫑"], ["Beterraba","🔴"], ["Mandioca","🌿"], ["Batata-doce","🍠"],
+    ["Cheiro-verde","🌱"], ["Abacate","🥑"], ["Pera","🍐"]
+],
+
+Açougue: [
+    ["Carne bovina","🐄"], ["Peito de frango","🍗"], ["Coxa de frango","🍗"],
+    ["Sobrecoxa de frango","🍗"], ["Carne moída","🍖"], ["Acém bovino","🐂"],
+    ["Patinho bovino","🥩"], ["Alcatra","🥩"], ["Picanha","🥩"], ["Costela bovina","🍖"],
+    ["Músculo bovino","💪"], ["Filé mignon","🥩"], ["Bife bovino","🥩"],
+    ["Fígado bovino","🫀"], ["Linguiça toscana","🌭"], ["Linguiça calabresa","🌶️"],
+    ["Costela suína","🐖"], ["Lombo suíno","🐷"], ["Pernil suíno","🍖"],
+    ["Bisteca suína","🥩"], ["Bacon","🥓"], ["Panceta suína","🥓"], ["Asa de frango","🍗"],
+    ["Filé de frango","🐔"], ["Coração de frango","❤️"], ["Peito de peru","🦃"],
+    ["Carne para ensopado","🍲"], ["Hambúrguer bovino","🍔"],
+    ["Salsicha","🌭"], ["Frango inteiro","🐓"]
+],
+
+Padaria: [
+    ["Pão francês","🥖"], ["Bolo","🍰"], ["Pão de forma","🍞"], ["Pão integral","🌾"],
+    ["Pão de leite","🥛"], ["Pão de queijo","🧀"], ["Croissant","🥐"], ["Sonho","🍩"],
+    ["Rosquinha","🥯"], ["Biscoito de polvilho","⭕"], ["Broa de milho","🌽"],
+    ["Pão doce","🥮"], ["Pão de hot dog","🌭"], ["Pão de hambúrguer","🍔"],
+    ["Torrada","🍞"], ["Pão sírio","🫓"], ["Pão australiano","🦘"], ["Baguete","🥖"],
+    ["Cuca","🥧"], ["Pão de batata","🥔"], ["Empada","🥧"], ["Esfirra","🥟"],
+    ["Coxinha","🍗"], ["Pastel assado","🥟"], ["Torta salgada","🥧"],
+    ["Bolo de chocolate","🍫"], ["Bolo de cenoura","🥕"],
+    ["Bolo de fubá","🟨"], ["Pão caseiro","🏡"], ["Pão de milho","🌽"]
+],
+
+Congelados: [
+    ["Pizza congelada","🍕"], ["Batata congelada","🍟"], ["Lasanha congelada","🥘"],
+    ["Hambúrguer congelado","🍔"], ["Nuggets","🍗"], ["Pão de queijo congelado","🧀"],
+    ["Legumes congelados","🥕"], ["Ervilha congelada","🫛"], ["Milho congelado","🌽"],
+    ["Polpa de açaí","🫐"], ["Polpa de morango","🍓"], ["Polpa de maracujá","🟡"],
+    ["Peixe congelado","🐟"], ["Filé de tilápia","🐠"], ["Camarão congelado","🦐"],
+    ["Isca de frango","🍗"], ["Almôndega congelada","🧆"], ["Kibe congelado","🥙"],
+    ["Pastel congelado","🥟"], ["Massa de pastel","🫓"], ["Pão de alho","🧄"],
+    ["Sorvete de creme","🍦"], ["Sorvete de chocolate","🍫"], ["Açaí congelado","🍇"],
+    ["Mandioca congelada","🥔"], ["Brócolis congelado","🥦"],
+    ["Couve-flor congelada","🌸"], ["Misto de legumes","🥗"],
+    ["Hambúrguer de frango","🐔"], ["Picolé","🍧"]
+]
+
+};
+
+// =====================================
+// CONFIGURAÇÃO DAS CATEGORIAS
+// (faixa de preço usada para gerar valores de exemplo)
+// =====================================
+
+const CONFIG = {
+    Alimentos:  {emoji:"🍎", corredor:"01", min:3.50, max:24.00, unidade:"un"},
+    Higiene:    {emoji:"🧴", corredor:"02", min:2.90, max:28.00, unidade:"un"},
+    Limpeza:    {emoji:"🧹", corredor:"03", min:2.50, max:22.00, unidade:"un"},
+    Bazar:      {emoji:"🏠", corredor:"04", min:4.90, max:69.00, unidade:"un"},
+    Bebidas:    {emoji:"🥤", corredor:"05", min:2.50, max:16.00, unidade:"un"},
+    Hortifruti: {emoji:"🥑", corredor:"06", min:2.99, max:12.00, unidade:"kg"},
+    Açougue:    {emoji:"🥩", corredor:"07", min:12.90, max:54.00, unidade:"kg"},
+    Padaria:    {emoji:"🥖", corredor:"08", min:2.90, max:26.00, unidade:"un"},
+    Congelados: {emoji:"🧊", corredor:"09", min:7.90, max:36.00, unidade:"un"}
+};
+
+// Três linhas de marca para comparar em todos os produtos
+const LINHAS = [
+    {nome:"Econômica",   fator:0.88},
+    {nome:"Tradicional", fator:1.00},
+    {nome:"Premium",     fator:1.22}
+];
+
+// =====================================
+// FUNÇÕES AUXILIARES
+// =====================================
+
+// Tira acentos e deixa minúsculo: "Açúcar" -> "acucar"
+function norm(texto) {
+    return String(texto).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+}
+
+// Número fixo entre 0 e 1 para cada texto (os preços não mudam ao recarregar)
+function hash01(texto) {
+    let h = 2166136261;
+    for (let i = 0; i < texto.length; i++) {
+        h ^= texto.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+    }
+    return ((h >>> 0) % 10000) / 10000;
+}
+
+// Preço com final de etiqueta de mercado (,49 / ,90 / ,99)
+function precoDeEtiqueta(valor, h) {
+    const finais = [0.49, 0.90, 0.99];
+    return Number((Math.floor(valor) + finais[Math.floor(h * 3) % 3]).toFixed(2));
+}
+
+const brl = v => v.toLocaleString("pt-BR", {style:"currency", currency:"BRL"});
+
+const pad2 = n => String(n).padStart(2, "0");
+
+// =====================================
+// GERAR OS PRODUTOS
+// =====================================
+
+const produtos = [];
+
+Object.keys(CATALOGO).forEach(categoria => {
+
+    const config = CONFIG[categoria];
+
+    CATALOGO[categoria].forEach(([nome, emoji], i) => {
+
+        const base = config.min + (config.max - config.min) * Math.pow(hash01(nome), 1.6);
+
+        const marcas = LINHAS.map(linha => ({
+            linha: linha.nome,
+            preco: precoDeEtiqueta(base * linha.fator, hash01(nome + linha.nome))
+        }));
+
+        // Garante Econômica < Tradicional < Premium
+        if (marcas[0].preco >= marcas[1].preco) marcas[0].preco = Number((marcas[1].preco - 0.30).toFixed(2));
+        if (marcas[2].preco <= marcas[1].preco) marcas[2].preco = Number((marcas[1].preco + 0.40).toFixed(2));
+
+        marcas.sort((a, b) => a.preco - b.preco);
+
+        produtos.push({
+            id: produtos.length,
+            nome: nome,
+            emoji: emoji,
+            categoria: categoria,
+            corredor: config.corredor,
+            gondola: pad2(Math.floor(i / 5) + 1),
+            prateleira: pad2((i % 4) + 1),
+            unidade: config.unidade,
+            marcas: marcas,
+            busca: norm(nome)
+        });
+
+    });
+
+});
+
+// =====================================
+// ESTADO DA TELA
+// =====================================
+
+let estado   = {modo:"todos", valor:""};   // todos | categoria | busca | comparar
+let anterior = {modo:"todos", valor:""};   // para o botão "Voltar"
+
+const elResultados = document.getElementById("resultados");
+const elContador   = document.getElementById("contador");
+const elTitulo     = document.getElementById("tituloResultados");
+const elCampo      = document.getElementById("campoPesquisa");
+const elOrdem      = document.getElementById("ordem");
+
+// =====================================
+// CATEGORIAS (botões)
+// =====================================
+
+function montarCategorias() {
+
+    document.getElementById("categorias").innerHTML = categorias.map(cat => {
+
+        const total = produtos.filter(p => p.categoria === cat.nome).length;
+
+        return `
+            <button type="button" class="category-card" data-cat="${cat.nome}" aria-pressed="false">
+                <div class="category-icon" aria-hidden="true">${cat.emoji}</div>
+                <div>
+                    <h3>${cat.nome}</h3>
+                    <p>${cat.descricao}</p>
+                    <p>${total} produtos</p>
+                </div>
+            </button>
+        `;
+
+    }).join("");
+
+}
+
+function montarSugestoes() {
+
+    document.getElementById("sugestoes").innerHTML = produtos
+        .map(p => p.nome)
+        .sort((a, b) => a.localeCompare(b, "pt-BR"))
+        .map(nome => `<option value="${nome}">`)
+        .join("");
+
+}
+
+// =====================================
+// CARTÕES
+// =====================================
+
+function blocoLocal(p) {
+    return `
+        <div class="location-box">
+            <h4>📍 Onde encontrar:</h4>
+            <p>
+                Setor: ${p.categoria}<br>
+                Corredor: ${p.corredor}<br>
+                Gôndola: ${p.gondola}<br>
+                Prateleira: ${p.prateleira}
+            </p>
+        </div>
+    `;
+}
+
+function cardProduto(p) {
+
+    const menor = p.marcas[0].preco;
+
+    return `
+        <article class="product-card">
+
+            <div class="product-top">
+                <span class="product-emoji" aria-hidden="true">${p.emoji}</span>
+                <span class="product-category">${p.categoria}</span>
+            </div>
+
+            <div class="product-info">
+
+                <h3>${p.nome}</h3>
+                <p class="brand">${p.marcas.length} marcas disponíveis</p>
+
+                <div class="price">
+                    <small>a partir de</small>
+                    ${brl(menor)}<span class="unit"> /${p.unidade}</span>
+                </div>
+
+                ${blocoLocal(p)}
+
+                <div class="actions">
+                    <button type="button" class="btn btn-primary" data-acao="comparar" data-id="${p.id}">
+                        ⚖️ Comparar marcas e preços
+                    </button>
+                    <div class="row">
+                        <button type="button" class="btn btn-ghost" data-acao="mapa" data-id="${p.id}">🗺️ Ver no mapa</button>
+                        <button type="button" class="btn btn-ghost" data-acao="ouvir" data-id="${p.id}">🔊 Ouvir</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </article>
+    `;
+
+}
+
+function cardMarca(p, marca, indice) {
+
+    const maisBarata = p.marcas[0].preco;
+    const maisCara   = p.marcas[p.marcas.length - 1].preco;
+    const melhor     = indice === 0;
+
+    return `
+        <article class="product-card ${melhor ? "best" : ""}">
+
+            <div class="product-top">
+                <span class="product-emoji" aria-hidden="true">${p.emoji}</span>
+                <span class="product-category">Linha ${marca.linha}</span>
+            </div>
+
+            <div class="product-info">
+
+                <h3>${p.nome}</h3>
+                <p class="brand">Marca: ${marca.linha}</p>
+
+                <div class="price">
+                    ${brl(marca.preco)}<span class="unit"> /${p.unidade}</span>
+                </div>
+
+                ${melhor
+                    ? `<p class="cheapest">★ MENOR PREÇO — economize ${brl(maisCara - maisBarata)}</p>`
+                    : `<p class="extra">+ ${brl(marca.preco - maisBarata)} que a mais barata</p>`}
+
+            </div>
+
+        </article>
+    `;
+
+}
+
+// =====================================
+// MOSTRAR RESULTADOS
+// =====================================
+
+function ordenar(lista, ordem, termo) {
+
+    const copia = [...lista];
+
+    if (ordem === "az") {
+        copia.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+    } else if (ordem === "menor") {
+        copia.sort((a, b) => a.marcas[0].preco - b.marcas[0].preco);
+    } else if (ordem === "maior") {
+        copia.sort((a, b) => b.marcas[0].preco - a.marcas[0].preco);
+    } else if (termo) {
+        // Padrão da busca: quem começa com o termo vem primeiro
+        copia.sort((a, b) => Number(b.busca.startsWith(termo)) - Number(a.busca.startsWith(termo)));
+    }
+
+    return copia;
+
+}
+
+function mostrarLista(lista, titulo, termo) {
+
+    elTitulo.innerText = titulo;
+
+    elContador.innerText = lista.length +
+        (lista.length === 1 ? " produto encontrado" : " produtos encontrados");
+
+    if (lista.length === 0) {
+
+        elResultados.innerHTML = `
+            <div class="empty">
+                <span>🔍</span>
+                <h3>Nenhum produto encontrado!</h3>
+                <p>Tente pesquisar outro nome ou escolher uma categoria.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    elResultados.innerHTML = ordenar(lista, elOrdem.value, termo).map(cardProduto).join("");
+
+}
+
+function mostrarComparacao(p) {
+
+    elTitulo.innerText = "⚖️ Comparação de preços: " + p.nome;
+    elContador.innerText = p.marcas.length + " marcas";
+
+    elResultados.innerHTML = `
+        <div class="back-row">
+            <button type="button" class="back-button" data-acao="voltar">← Voltar</button>
+        </div>
+
+        <div class="compare-head">
+            <span class="product-emoji" aria-hidden="true">${p.emoji}</span>
+            <div>
+                <h3>${p.nome}</h3>
+                <p class="brand">Setor ${p.categoria}</p>
+            </div>
+            ${blocoLocal(p)}
+            <div class="actions" style="min-width:150px">
+                <button type="button" class="btn btn-ghost" data-acao="mapa" data-id="${p.id}">🗺️ Ver no mapa</button>
+                <button type="button" class="btn btn-ghost" data-acao="ouvir" data-id="${p.id}">🔊 Ouvir</button>
+            </div>
+        </div>
+
+        ${p.marcas.map((m, i) => cardMarca(p, m, i)).join("")}
+    `;
+
+}
+
+function atualizarBotoesCategoria() {
+
+    document.querySelectorAll(".category-card").forEach(btn => {
+        const ativo = estado.modo === "categoria" && btn.dataset.cat === estado.valor;
+        btn.classList.toggle("active", ativo);
+        btn.setAttribute("aria-pressed", String(ativo));
+    });
+
+}
+
+function render() {
+
+    atualizarBotoesCategoria();
+
+    elOrdem.disabled = estado.modo === "comparar";
+
+    if (estado.modo === "comparar") {
+        mostrarComparacao(produtos[estado.valor]);
+        return;
+    }
+
+    if (estado.modo === "categoria") {
+        mostrarLista(produtos.filter(p => p.categoria === estado.valor), "📂 " + estado.valor);
+        return;
+    }
+
+    if (estado.modo === "busca") {
+        const termo = norm(estado.valor);
+        const achados = produtos.filter(p => p.busca.includes(termo) || norm(p.categoria).includes(termo));
+        mostrarLista(achados, "🔎 Resultado da pesquisa", termo);
+        return;
+    }
+
+    mostrarLista(produtos, "🛍️ Todos os produtos");
+
+}
+
+// =====================================
+// AÇÕES
+// =====================================
+
+function mostrarTodos() {
+    elCampo.value = "";
+    estado = {modo:"todos", valor:""};
+    render();
+}
+
+function filtrarCategoria(nome) {
+    elCampo.value = "";
+    estado = {modo:"categoria", valor:nome};
+    render();
+}
+
+function pesquisarProduto() {
+
+    const texto = elCampo.value.trim();
+
+    if (!texto) {
+        mostrarTodos();
+        return;
+    }
+
+    estado = {modo:"busca", valor:texto};
+    render();
+
+}
+
+function comparar(id) {
+    if (estado.modo !== "comparar") anterior = {...estado};
+    estado = {modo:"comparar", valor:id};
+    render();
+}
+
+function voltar() {
+    estado = {...anterior};
+    elCampo.value = estado.modo === "busca" ? estado.valor : "";
+    render();
+}
+
+function rolarParaResultados() {
+    elTitulo.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+// =====================================
+// MAPA DA LOJA
+// =====================================
+
+const dlgMapa = document.getElementById("dlgMapa");
+
+function abrirMapa(p) {
+
+    document.getElementById("mapaTitulo").innerText = p.emoji + " " + p.nome;
+
+    document.getElementById("mapaGrid").innerHTML = categorias.map(cat => {
+
+        const config = CONFIG[cat.nome];
+        const ativo  = cat.nome === p.categoria;
+
+        return `
+            <div class="corredor ${ativo ? "ativo" : ""}">
+                ${ativo ? '<span class="pin" aria-hidden="true">📍</span>' : ""}
+                <span class="c-num">Corredor ${config.corredor}</span>
+                <span class="c-emoji" aria-hidden="true">${cat.emoji}</span>
+                <span class="c-nome">${cat.nome}</span>
+                ${ativo ? `<small>Gôndola ${p.gondola} · Prateleira ${p.prateleira}</small>` : ""}
+            </div>
+        `;
+
+    }).join("");
+
+    document.getElementById("mapaInfo").innerHTML =
+        `Siga até o <b>corredor ${p.corredor}</b> (${p.categoria}), ` +
+        `<b>gôndola ${p.gondola}</b>, <b>prateleira ${p.prateleira}</b>.`;
+
+    dlgMapa.showModal();
+
+}
+
+dlgMapa.addEventListener("click", e => {
+    // Clicar fora da janela também fecha
+    if (e.target === dlgMapa) dlgMapa.close();
+});
+
+document.getElementById("fecharMapa").addEventListener("click", () => dlgMapa.close());
+
+// =====================================
+// ÁUDIO (leitura da localização)
+// =====================================
+
+function ouvir(p) {
+
+    if (!("speechSynthesis" in window)) {
+        alert("Este navegador não tem leitura em voz alta.");
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const fala = new SpeechSynthesisUtterance(
+        `${p.nome}. Setor ${p.categoria}, corredor ${Number(p.corredor)}, ` +
+        `gôndola ${Number(p.gondola)}, prateleira ${Number(p.prateleira)}. ` +
+        `Preço a partir de ${brl(p.marcas[0].preco)}.`
+    );
+
+    fala.lang = "pt-BR";
+    window.speechSynthesis.speak(fala);
+
+}
+
+// =====================================
+// TAMANHO DAS LETRAS
+// =====================================
+
+let nivelFonte = 0;
+
+function aplicarFonte(delta) {
+    nivelFonte = Math.max(-1, Math.min(2, nivelFonte + delta));
+    document.documentElement.setAttribute("data-fs", String(nivelFonte));
+    try { localStorage.setItem("superguia-fs", String(nivelFonte)); } catch (e) {}
+}
+
+try {
+    const salvo = Number(localStorage.getItem("superguia-fs"));
+    if (!Number.isNaN(salvo)) { nivelFonte = salvo; aplicarFonte(0); }
+} catch (e) {}
+
+document.getElementById("fsMais").addEventListener("click", () => aplicarFonte(1));
+document.getElementById("fsMenos").addEventListener("click", () => aplicarFonte(-1));
+
+// =====================================
+// EVENTOS
+// =====================================
+
+document.getElementById("categorias").addEventListener("click", e => {
+    const btn = e.target.closest(".category-card");
+    if (!btn) return;
+    filtrarCategoria(btn.dataset.cat);
+    rolarParaResultados();
+});
+
+elResultados.addEventListener("click", e => {
+
+    const btn = e.target.closest("[data-acao]");
+    if (!btn) return;
+
+    const p = produtos[Number(btn.dataset.id)];
+
+    if (btn.dataset.acao === "comparar") { comparar(p.id); rolarParaResultados(); }
+    if (btn.dataset.acao === "voltar")   { voltar(); }
+    if (btn.dataset.acao === "mapa")     { abrirMapa(p); }
+    if (btn.dataset.acao === "ouvir")    { ouvir(p); }
+
+});
+
+elOrdem.addEventListener("change", render);
+
+document.getElementById("botaoBuscar").addEventListener("click", pesquisarProduto);
+
+// Pesquisa enquanto digita (com pequena pausa) e também com Enter
+let pausa;
+elCampo.addEventListener("input", () => {
+    clearTimeout(pausa);
+    pausa = setTimeout(pesquisarProduto, 200);
+});
+
+elCampo.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        clearTimeout(pausa);
+        pesquisarProduto();
+    }
+});
+
+// =====================================
+// INICIAR
+// =====================================
+
+montarCategorias();
+montarSugestoes();
+mostrarTodos();
+
+</script>
+
+</body>
+</html>
